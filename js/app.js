@@ -1,8 +1,8 @@
 // Enemies our player must avoid
 var Enemy = function() {
-    this.x = -125;
+    this.x = -500;
     this.y = rowSelector();
-    this.speed = Math.floor((Math.random() * 200) + 50);
+    this.speed = Math.floor((Math.random() * 500) + 200);
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -26,6 +26,9 @@ Enemy.prototype.update = function(dt) {
       this.speed = Math.floor((Math.random() * 100) + 100);
       this.x = -20;
       this.y = rowSelector();
+    }
+    if (this.x < -100 && this.x > -150) {
+      this.speed = Math.floor((Math.random() * 100) + 100);
     }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -64,10 +67,17 @@ Player.prototype.update = function() {
       player.x = player.x - 100;
     }
     if (player.y > 400) {
+
       player.y = player.y - 80;
     }
     if (player.y < 60) {
-      
+      for (enemies in allEnemies) {
+        allEnemies[enemies].x = -250;
+        allEnemies[enemies].speed = Math.floor((Math.random() * 100) + 100);
+        allEnemies[enemies].y = rowSelector();
+      }
+      player.y = 300;
+      player.x = 200;
     }
 }
 
@@ -99,24 +109,12 @@ var enemy3 = new Enemy();
 var enemy4 = new Enemy();
 var enemy5 = new Enemy();
 var enemy6 = new Enemy();
-var enemy7 = new Enemy();
-var enemy8 = new Enemy();
-var enemy9 = new Enemy();
-var enemy10 = new Enemy();
-var enemy11 = new Enemy();
-var enemy12 = new Enemy();
 allEnemies.push(enemy1);
 allEnemies.push(enemy2);
 allEnemies.push(enemy3);
 allEnemies.push(enemy4);
 allEnemies.push(enemy5);
 allEnemies.push(enemy6);
-allEnemies.push(enemy7);
-allEnemies.push(enemy8);
-allEnemies.push(enemy9);
-allEnemies.push(enemy10);
-allEnemies.push(enemy11);
-allEnemies.push(enemy12);
 var player = new Player();
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
