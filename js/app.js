@@ -2,7 +2,7 @@
 var Enemy = function() {
     this.x = -500;
     this.y = rowSelector();
-    this.speed = Math.floor((Math.random() * 500) + 200);
+    this.speed = Math.floor((Math.random() * 200) + 1000);
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -20,11 +20,12 @@ Enemy.prototype.update = function(dt) {
       for (enemies in allEnemies) {
         allEnemies[enemies].x = -250;
       }
+      score += -10;
     }
     this.x += this.speed * dt;
     if (this.x > 505) {
       this.speed = Math.floor((Math.random() * 100) + 100);
-      this.x = -20;
+      this.x = -100;
       this.y = rowSelector();
     }
     if (this.x < -100 && this.x > -150) {
@@ -40,18 +41,7 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-var rowSelector = function() {
-    var row = Math.floor(Math.random()*3);
-    var y;
-    if (row === 2) {
-      y = 60;
-    } else if (row === 1) {
-      y = 140;
-    } else if (row === 0) {
-      y = 220;
-    }
-    return y;
-}
+
 
 var Player = function() {
     this.sprite = "images/char-boy.png";
@@ -71,13 +61,9 @@ Player.prototype.update = function() {
       player.y = player.y - 80;
     }
     if (player.y < 60) {
-      for (enemies in allEnemies) {
-        allEnemies[enemies].x = -250;
-        allEnemies[enemies].speed = Math.floor((Math.random() * 100) + 100);
-        allEnemies[enemies].y = rowSelector();
-      }
       player.y = 300;
       player.x = 200;
+      score += 10;
     }
 }
 
@@ -99,9 +85,65 @@ Player.prototype.handleInput = function(key) {
       player.x += 100;
     }
 }
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+
+var Gem = function() {
+    this.y = rowSelector();
+    this.x = colSelector();
+    var gem = Math.floor(Math.random()*3);
+    if (gem === 2) {
+      this.sprite = "images/Gem Green.png";
+    } else if (gem === 1) {
+      this.sprite = "images/Gem Blue.png";
+    } else if (gem === 0) {
+      this.sprite = "images/Gem Orange.png";
+    }
+    var chance = Math.random();
+}
+
+Gem.prototype.update = function() {
+    if (this.x === player.x && this.y === player.y) {
+      score += 20;
+      this.y = rowSelector();
+      this.x = colSelector();
+    }
+}
+
+Gem.prototype.render = function() {
+      ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+// This randomly generates a y value between the 3 row tiles
+var rowSelector = function() {
+    var row = Math.floor(Math.random()*3);
+    var y;
+    if (row === 2) {
+      y = 60;
+    } else if (row === 1) {
+      y = 140;
+    } else if (row === 0) {
+      y = 220;
+    }
+    return y;
+}
+
+// Randomly gererates an x value for items can sit on the correct tile.
+var colSelector = function() {
+    var col = Math.floor(Math.random()*5);
+    var x;
+    if (col === 4) {
+      x = 400;
+    } else if (col === 3) {
+      x = 300;
+    } else if (col === 2) {
+      x = 200;
+    } else if (col === 1) {
+      x = 100;
+    } else if (col === 0) {
+      x = 0;
+    }
+    return x;
+}
+
 var allEnemies = [];
 var enemy1 = new Enemy();
 var enemy2 = new Enemy();
@@ -116,11 +158,14 @@ allEnemies.push(enemy4);
 allEnemies.push(enemy5);
 allEnemies.push(enemy6);
 var player = new Player();
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
-
+var allGems = [];
+var gem1 = new Gem();
+var gem2 = new Gem();
+var gem3 = new Gem();
+allGems.push(gem1);
+allGems.push(gem2);
+allGems.push(gem3);
+var score = 0;
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
