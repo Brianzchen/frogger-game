@@ -241,7 +241,7 @@ document.addEventListener('keyup', function(e) {
 });
 
 var hammertime = new Hammer(myElement);
-hammertime.on('swipeleft swiperight tap rotatestart', function(ev) {
+hammertime.on('swipeleft swiperight tap pinch', function(ev) {
     var move;
     if (ev.type === "swipeleft") {
       move = "left";
@@ -249,7 +249,7 @@ hammertime.on('swipeleft swiperight tap rotatestart', function(ev) {
       move = "right";
     }else if (ev.type === "tap") {
       move = "up";
-    }else if (ev.type === "rotatestart") {
+    }else if (ev.type === "pinch") {
       move = "down";
     }
     player.handleInput(move);
