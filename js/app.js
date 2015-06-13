@@ -225,7 +225,7 @@ var score = 0;
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-//works with arrow keys and wasd inputs
+// Works with arrow keys and wasd inputs
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
@@ -238,4 +238,19 @@ document.addEventListener('keyup', function(e) {
         83: 'down'
     };
     player.handleInput(allowedKeys[e.keyCode]);
+});
+
+var hammertime = new Hammer(myElement);
+hammertime.on('swipeleft swiperight swipeup swipedown', function(ev) {
+    var move;
+    if (ev.type === "swipeleft") {
+      move = "left";
+    } else if (ev.type === "swiperight") {
+      move = "right";
+    }else if (ev.type === "swipeup") {
+      move = "up";
+    }else if (ev.type === "swipedown") {
+      move = "down";
+    }
+    player.handleInput(move);
 });
