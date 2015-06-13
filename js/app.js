@@ -100,7 +100,10 @@ Gem.prototype.update = function() {
       this.x = colSelector();
       this.chance = Math.random();
     }
-    if (score > 100 && score < 200) {
+    if (score <100) {
+      this.sprite = "images/Gem Blue.png";
+    }
+    if (score >= 100 && score < 200) {
       this.sprite = "images/Gem Green.png";
     }
     if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 100 && score < 200) {
@@ -222,12 +225,32 @@ var score = 0;
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
+// Works with arrow keys and wasd inputs
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
+        65: 'left',
         38: 'up',
+        87: 'up',
         39: 'right',
-        40: 'down'
+        68: 'right',
+        40: 'down',
+        83: 'down'
     };
     player.handleInput(allowedKeys[e.keyCode]);
+});
+
+var hammertime = new Hammer(myElement);
+hammertime.on('swipeleft swiperight swipeup swipedown', function(ev) {
+    var move;
+    if (ev.type === "swipeleft") {
+      move = "left";
+    } else if (ev.type === "swiperight") {
+      move = "right";
+    }else if (ev.type === "swipeup") {
+      move = "up";
+    }else if (ev.type === "swipedown") {
+      move = "down";
+    }
+    player.handleInput(move);
 });
