@@ -36,8 +36,9 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+//-----------------------------------------------------------------------------
 
-
+//The player character
 var Player = function() {
     this.sprite = "images/char-boy.png";
     this.x = 200;
@@ -81,36 +82,58 @@ Player.prototype.handleInput = function(key) {
     }
 }
 
+//-----------------------------------------------------------------------------
+
 //the gems that pop up throughout the game that the player
 //can pick up to gain points, adds 20 points per gem.
 var Gem = function() {
     this.y = rowSelector();
     this.x = colSelector();
-    var gem = Math.floor(Math.random()*3);
-    if (gem === 2) {
-      this.sprite = "images/Gem Green.png";
-    } else if (gem === 1) {
-      this.sprite = "images/Gem Blue.png";
-    } else if (gem === 0) {
-      this.sprite = "images/Gem Orange.png";
-    }
-    this.chance = Math.random();
+    this.sprite = "images/Gem Blue.png";
+    this.chance = 0.9;
 }
 
 Gem.prototype.update = function() {
-    if (this.x === player.x && this.y === player.y && this.chance <= 0.5) {
-      score += 20;
+    if (this.x === player.x && this.y === player.y && this.chance < 0.3) {
+      score += 10;
       this.y = rowSelector();
       this.x = colSelector();
       this.chance = Math.random();
     }
+    if (score > 100 && score < 200) {
+      this.sprite = "images/Gem Green.png";
+    }
+    if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 100 && score < 200) {
+      score += 10;
+    }
+    if (score >= 200) {
+      this.sprite = "images/Gem Orange.png";
+    }
+    if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 200) {
+      score += 10;
+    }
 }
 
 Gem.prototype.render = function() {
-    if (this.chance < 0.5) {
+    if (this.chance < 0.3) {
       ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 }
+
+//Set timer for gem generation
+setInterval(function () {
+    for (gems in allGems) {
+      allGems[gems].chance = Math.random();
+      if (allGems[gems].chance <0.05) {
+        allGems[gems].chance = Math.random();
+        allGems[gems].x = colSelector();
+        allGems[gems].y = rowSelector();
+      }
+    }
+  }
+  , 5000);
+
+//-----------------------------------------------------------------------------
 
 //The star object pops up not frequently but offers a big point bonus
 var Star = function() {
@@ -121,19 +144,35 @@ var Star = function() {
 }
 
 Star.prototype.update = function() {
-    if (this.x === player.x && this.y === player.y && this.chance <= 0.2) {
-      score += 50;
+    if (this.x === player.x && this.y === player.y && this.chance < 0.1) {
+      score += 30;
       this.y = rowSelector();
       this.x = colSelector();
       this.chance = Math.random();
     }
+    for (gems in allGems) {
+      if (allGems[gems].x === this.x && allGems[gems].y === this.y) {
+        allGems[gems].y = rowSelector();
+        allGems[gems].x = colSelector();
+      }
+    }
 }
 
 Star.prototype.render = function() {
-    if (this.chance < 0.2) {
+    if (this.chance < 0.1) {
       ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 }
+
+//set timer for star generation
+setInterval(function () {
+    if (star.chance >= 0.1) {
+      star.chance = Math.random();
+    }
+  }
+  , 8000);
+
+//-----------------------------------------------------------------------------
 
 // This randomly generates a y value between the 3 row tiles
 var rowSelector = function() {
@@ -167,44 +206,19 @@ var colSelector = function() {
     return x;
 }
 
+//initiates all the objects; enemies, player, gems, stars
+// and scoring system
 var allEnemies = [];
-var enemy1 = new Enemy();
-var enemy2 = new Enemy();
-var enemy3 = new Enemy();
-var enemy4 = new Enemy();
-var enemy5 = new Enemy();
-var enemy6 = new Enemy();
-allEnemies.push(enemy1);
-allEnemies.push(enemy2);
-allEnemies.push(enemy3);
-allEnemies.push(enemy4);
-allEnemies.push(enemy5);
-allEnemies.push(enemy6);
+for (i = 0; i < 6; i++) {
+  allEnemies.push(new Enemy());
+}
 var player = new Player();
 var allGems = [];
-var gem1 = new Gem();
-var gem2 = new Gem();
-var gem3 = new Gem();
-allGems.push(gem1);
-allGems.push(gem2);
-allGems.push(gem3);
-var score = 0;
+for (i = 0; i < 6; i++) {
+  allGems.push(new Gem());
+}
 var star = new Star();
-
-setInterval(function () {
-    for (gems in allGems) {
-      allGems[gems].chance = Math.random();
-      allGems[gems].x = colSelector();
-      allGems[gems].y = rowSelector();
-    }
-  }
-  , 5000);
-  setInterval(function () {
-      if (star.chance >= 0.2) {
-        star.chance = Math.random();
-      }
-    }
-    , 8000);
+var score = 0;
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
