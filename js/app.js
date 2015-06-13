@@ -241,15 +241,15 @@ document.addEventListener('keyup', function(e) {
 });
 
 var hammertime = new Hammer(myElement);
-hammertime.on('swipeleft swiperight swipeup swipedown', function(ev) {
+hammertime.on('swipeleft swiperight tap rotatestart', function(ev) {
     var move;
     if (ev.type === "swipeleft") {
       move = "left";
     } else if (ev.type === "swiperight") {
       move = "right";
-    }else if (ev.type === "swipeup") {
+    }else if (ev.type === "tap") {
       move = "up";
-    }else if (ev.type === "swipedown") {
+    }else if (ev.type === "rotatestart") {
       move = "down";
     }
     player.handleInput(move);
