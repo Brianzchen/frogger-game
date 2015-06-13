@@ -97,19 +97,22 @@ var Gem = function() {
     } else if (gem === 0) {
       this.sprite = "images/Gem Orange.png";
     }
-    var chance = Math.random();
+    this.chance = Math.random();
 }
 
 Gem.prototype.update = function() {
-    if (this.x === player.x && this.y === player.y) {
+    if (this.x === player.x && this.y === player.y && this.chance <= 0.5) {
       score += 20;
       this.y = rowSelector();
       this.x = colSelector();
+      this.chance = Math.random();
     }
 }
 
 Gem.prototype.render = function() {
+    if (this.chance < 0.5) {
       ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
 }
 
 // This randomly generates a y value between the 3 row tiles
@@ -167,6 +170,14 @@ allGems.push(gem2);
 allGems.push(gem3);
 var score = 0;
 
+setInterval(function () {
+  for (gems in allGems) {
+    allGems[gems].chance = Math.random();
+    allGems[gems].x = colSelector();
+    allGems[gems].y = rowSelector();
+  }}
+  , 3000);
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
@@ -176,6 +187,5 @@ document.addEventListener('keyup', function(e) {
         39: 'right',
         40: 'down'
     };
-
     player.handleInput(allowedKeys[e.keyCode]);
 });
