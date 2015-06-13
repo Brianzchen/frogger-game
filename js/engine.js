@@ -94,6 +94,7 @@ var Engine = (function(global) {
         allGems.forEach(function(gem) {
             gem.update();
         });
+        star.update();
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
@@ -168,6 +169,7 @@ var Engine = (function(global) {
         allGems.forEach(function(gem) {
             gem.render();
         });
+        star.render();
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -195,7 +197,8 @@ var Engine = (function(global) {
         'images/char-boy.png',
         'images/Gem Orange.png',
         'images/Gem Blue.png',
-        'images/Gem Green.png'
+        'images/Gem Green.png',
+        'images/Star.png'
     ]);
     Resources.onReady(init);
 
