@@ -131,11 +131,12 @@ var Engine = (function(global) {
         ctx.save();
         ctx.fillStyle = "black";
         ctx.textAlign = "center";
-        ctx.font = "36pt impact";
-        ctx.fillText("Frogger Arcade Game", canvas.width/2, 40);
+        ctx.font = "28pt impact";
+        ctx.fillText("The Hardcore Frogger Experience", canvas.width/2, 40);
         ctx.fillStyle = "white";
         ctx.fillRect(70, 600, 400, 200);
         ctx.fillStyle = "black";
+        ctx.font = "36pt impact";
         ctx.fillText("Your score: " + score, canvas.width/2, 640);
         ctx.fillText("High score: " + highScore, canvas.width/2, 690);
         ctx.restore();
