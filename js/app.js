@@ -3,7 +3,7 @@
 var Enemy = function() {
     this.x = -500;
     this.y = rowSelector();
-    this.speed = Math.floor((Math.random() * 2500) + 500);
+    this.speed = Math.floor((Math.random() * 2000) + 1000);
     this.sprite = 'images/enemy-bug.png';
 };
 
@@ -32,8 +32,9 @@ Enemy.prototype.update = function(dt) {
       this.x = -150;
       this.y = rowSelector();
     }
+    // Sets a good random speed as bugs approach background
     if (this.x < -100 && this.x > -150) {
-      this.speed = Math.floor((Math.random() * 20000) + 5000) * dt;
+      this.speed = Math.floor((Math.random() * 30000) + 4000) * dt;
     }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -159,7 +160,7 @@ setInterval(function () {
 
 //The star object pops up not frequently but offers a big point bonus
 var Star = function() {
-    this.y = rowSelector();
+    this.y = 60;
     this.x = colSelector();
     this.sprite = "images/Star.png";
     this.chance = 0.9;
@@ -169,7 +170,6 @@ var Star = function() {
 Star.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.1) {
       score += 30;
-      this.y = rowSelector();
       this.x = colSelector();
       this.chance = Math.random();
     }
@@ -234,7 +234,7 @@ var colSelector = function() {
 //initiates all the objects; enemies, player, gems, stars
 // and scoring system
 var allEnemies = [];
-for (i = 0; i < 6; i++) {
+for (i = 0; i < 5; i++) {
   allEnemies.push(new Enemy());
 }
 var player = new Player();
