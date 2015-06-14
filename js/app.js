@@ -14,8 +14,8 @@ Enemy.prototype.update = function(dt) {
     if ((this.x <= player.x+50 && this.x >= player.x-50) && this.y === player.y) {
       player.x = 200;
       player.y = 300;
-      for (enemies in allEnemies) {
-        allEnemies[enemies].x = -250;
+      for (var enemies in allEnemies) {
+        allEnemies[enemies].x = -300;
       }
       // Reverting the player to 0 point or lose 10 points if they have
       // less than 0.
@@ -39,12 +39,12 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-}
+};
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 //-----------------------------------------------------------------------------
 
@@ -57,47 +57,46 @@ var Player = function() {
 
 // Stops player from leaving the game border
 Player.prototype.update = function() {
-    if (player.x < 0) {
-      player.x = player.x + 100;
+    if (this.x < 0) {
+      this.x += 100;
     }
-    if (player.x > 400) {
-      player.x = player.x - 100;
+    if (this.x > 400) {
+      this.x += -100;
     }
-    if (player.y > 400) {
-
-      player.y = player.y - 80;
+    if (this.y > 400) {
+      this.y += -80;
     }
-    if (player.y < 60) {
-      player.y = 300;
-      player.x = 200;
+    if (this.y < 60) {
+      this.y = 300;
+      this.x = 200;
       score += 50;
     }
     // updates the highScore
     if (score > highScore) {
       highScore = score;
     }
-}
+};
 
 // Draws the player character
 Player.prototype.render = function() {
       ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 // Handle player inputs
 Player.prototype.handleInput = function(key) {
     if (key === "up") {
-      player.y += -80;
+      this.y += -80;
     }
     if (key === "down") {
-      player.y += 80;
+      this.y += 80;
     }
     if (key === "left") {
-      player.x += -100;
+      this.x += -100;
     }
     if (key === "right") {
-      player.x += 100;
+      this.x += 100;
     }
-}
+};
 
 //-----------------------------------------------------------------------------
 
@@ -134,18 +133,18 @@ Gem.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 500) {
       score += 10;
     }
-}
+};
 
 // Draws the Gem
 Gem.prototype.render = function() {
     if (this.chance < 0.3) {
       ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
-}
+};
 
 //Set timer for gem generation
 setInterval(function () {
-    for (gems in allGems) {
+    for (var gems in allGems) {
       allGems[gems].chance = Math.random();
       if (allGems[gems].chance <0.05) {
         allGems[gems].chance = Math.random();
@@ -153,8 +152,8 @@ setInterval(function () {
         allGems[gems].y = rowSelector();
       }
     }
-  }
-  , 5000);
+  },
+  5000);
 
 //-----------------------------------------------------------------------------
 
@@ -174,28 +173,28 @@ Star.prototype.update = function() {
       this.chance = Math.random();
     }
     // Makes sure the star and gem do not spawn on the same tile
-    for (gems in allGems) {
+    for (var gems in allGems) {
       if (allGems[gems].x === this.x && allGems[gems].y === this.y) {
         allGems[gems].y = rowSelector();
         allGems[gems].x = colSelector();
       }
     }
-}
+};
 
 // Draws the star
 Star.prototype.render = function() {
     if (this.chance < 0.1) {
       ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
-}
+};
 
 //set timer for star generation
 setInterval(function () {
     if (star.chance >= 0.1) {
       star.chance = Math.random();
     }
-  }
-  , 8000);
+  },
+  8000);
 
 //-----------------------------------------------------------------------------
 
