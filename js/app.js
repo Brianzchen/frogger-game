@@ -1,30 +1,39 @@
 // Enemies our player must avoid
+// Enemies initiated far away so when they emerge they don't clutter
 var Enemy = function() {
     this.x = -500;
     this.y = rowSelector();
-    this.speed = Math.floor((Math.random() * 200) + 1000);
+    this.speed = Math.floor((Math.random() * 2500) + 500);
     this.sprite = 'images/enemy-bug.png';
-}
+};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
+    // If the player comes in contact with a bug
     if ((this.x <= player.x+50 && this.x >= player.x-50) && this.y === player.y) {
       player.x = 200;
       player.y = 300;
       for (enemies in allEnemies) {
         allEnemies[enemies].x = -250;
       }
-      score += -10;
+      // Reverting the player to 0 point or lose 10 points if they have
+      // less than 0.
+      if (score <= 0) {
+        score += -10;
+      } else {
+        score = 0;
+      }
     }
     this.x += this.speed * dt;
+    // If the bug reaches the end, reset it and give it new speeds and
+    // co-ordinates as if it were a new bug.
     if (this.x > 505) {
-      this.speed = Math.floor((Math.random() * 100) + 100);
-      this.x = -100;
+      this.x = -150;
       this.y = rowSelector();
     }
     if (this.x < -100 && this.x > -150) {
-      this.speed = Math.floor((Math.random() * 100) + 100);
+      this.speed = Math.floor((Math.random() * 20000) + 5000) * dt;
     }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -43,8 +52,9 @@ var Player = function() {
     this.sprite = "images/char-boy.png";
     this.x = 200;
     this.y = 300;
-}
+};
 
+// Stops player from leaving the game border
 Player.prototype.update = function() {
     if (player.x < 0) {
       player.x = player.x + 100;
@@ -59,14 +69,20 @@ Player.prototype.update = function() {
     if (player.y < 60) {
       player.y = 300;
       player.x = 200;
-      score += 10;
+      score += 50;
+    }
+    // updates the highScore
+    if (score > highScore) {
+      highScore = score;
     }
 }
 
+// Draws the player character
 Player.prototype.render = function() {
       ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+// Handle player inputs
 Player.prototype.handleInput = function(key) {
     if (key === "up") {
       player.y += -80;
@@ -91,7 +107,7 @@ var Gem = function() {
     this.x = colSelector();
     this.sprite = "images/Gem Blue.png";
     this.chance = 0.9;
-}
+};
 
 Gem.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.3) {
@@ -100,23 +116,26 @@ Gem.prototype.update = function() {
       this.x = colSelector();
       this.chance = Math.random();
     }
-    if (score <100) {
+    // Sets up which gem to spawn and extra points are awarded if gem is of a
+    // certain color.
+    if (score <200) {
       this.sprite = "images/Gem Blue.png";
     }
-    if (score >= 100 && score < 200) {
+    if (score >= 200 && score < 500) {
       this.sprite = "images/Gem Green.png";
     }
-    if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 100 && score < 200) {
+    if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 200 && score < 500) {
       score += 10;
     }
-    if (score >= 200) {
+    if (score >= 500) {
       this.sprite = "images/Gem Orange.png";
     }
-    if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 200) {
+    if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 500) {
       score += 10;
     }
 }
 
+// Draws the Gem
 Gem.prototype.render = function() {
     if (this.chance < 0.3) {
       ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -143,9 +162,10 @@ var Star = function() {
     this.y = rowSelector();
     this.x = colSelector();
     this.sprite = "images/Star.png";
-    this.chance = Math.random();
-}
+    this.chance = 0.9;
+};
 
+// Updates the star if player steps on it.
 Star.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.1) {
       score += 30;
@@ -153,6 +173,7 @@ Star.prototype.update = function() {
       this.x = colSelector();
       this.chance = Math.random();
     }
+    // Makes sure the star and gem do not spawn on the same tile
     for (gems in allGems) {
       if (allGems[gems].x === this.x && allGems[gems].y === this.y) {
         allGems[gems].y = rowSelector();
@@ -161,6 +182,7 @@ Star.prototype.update = function() {
     }
 }
 
+// Draws the star
 Star.prototype.render = function() {
     if (this.chance < 0.1) {
       ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -189,7 +211,7 @@ var rowSelector = function() {
       y = 220;
     }
     return y;
-}
+};
 
 // Randomly gererates an x value for items can sit on the correct tile.
 var colSelector = function() {
@@ -207,7 +229,7 @@ var colSelector = function() {
       x = 0;
     }
     return x;
-}
+};
 
 //initiates all the objects; enemies, player, gems, stars
 // and scoring system
@@ -222,6 +244,7 @@ for (i = 0; i < 6; i++) {
 }
 var star = new Star();
 var score = 0;
+var highScore = 0;
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -238,19 +261,4 @@ document.addEventListener('keyup', function(e) {
         83: 'down'
     };
     player.handleInput(allowedKeys[e.keyCode]);
-});
-
-var hammertime = new Hammer(myElement);
-hammertime.on('swipeleft swiperight tap pinch', function(ev) {
-    var move;
-    if (ev.type === "swipeleft") {
-      move = "left";
-    } else if (ev.type === "swiperight") {
-      move = "right";
-    }else if (ev.type === "tap") {
-      move = "up";
-    }else if (ev.type === "pinch") {
-      move = "down";
-    }
-    player.handleInput(move);
 });

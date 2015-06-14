@@ -108,13 +108,14 @@ var Engine = (function(global) {
      * they are just drawing the entire screen over and over.
      */
     function render() {
-        /* This array holds the relative URL to the image used
-         * for that particular row of the game level.
-         */
+        // Draw a white box above the game so the players head doesn't stay there
         ctx.save();
         ctx.fillStyle = "white";
         ctx.fillRect(0,-50,500,100);
         ctx.restore();
+        /* This array holds the relative URL to the image used
+         * for that particular row of the game level.
+         */
         var rowImages = [
                 'images/water-block.png',   // Top row is water
                 'images/stone-block.png',   // Row 1 of 3 of stone
@@ -126,15 +127,17 @@ var Engine = (function(global) {
             numRows = 6,
             numCols = 5,
             row, col;
+        // Draws the frogger game title and the scoring systems.
         ctx.save();
         ctx.fillStyle = "black";
         ctx.textAlign = "center";
         ctx.font = "36pt impact";
         ctx.fillText("Frogger Arcade Game", canvas.width/2, 40);
         ctx.fillStyle = "white";
-        ctx.fillRect(70, 600, 400, 100);
+        ctx.fillRect(70, 600, 400, 200);
         ctx.fillStyle = "black";
-        ctx.fillText("Your score: " + score, canvas.width/2, 650);
+        ctx.fillText("Your score: " + score, canvas.width/2, 640);
+        ctx.fillText("High score: " + highScore, canvas.width/2, 690);
         ctx.restore();
 
         /* Loop through the number of rows and columns we've defined above
