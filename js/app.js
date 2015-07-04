@@ -1,9 +1,9 @@
 // Enemies our player must avoid
 // Enemies initiated far away so when they emerge they don't clutter
 var Enemy = function() {
-    this.x = -500;
+    this.x = -100;
     this.y = rowSelector();
-    this.speed = Math.floor((Math.random() * 2000) + 1000);
+    this.speed = Math.floor((Math.random() * 10)+2);
     this.sprite = 'images/enemy-bug.png';
 };
 
@@ -25,7 +25,7 @@ Enemy.prototype.update = function(dt) {
         score = 0;
       }
     }
-    this.x += this.speed * dt;
+    this.x += this.speed;
     // If the bug reaches the end, reset it and give it new speeds and
     // co-ordinates as if it were a new bug.
     if (this.x > 505) {
@@ -34,7 +34,8 @@ Enemy.prototype.update = function(dt) {
     }
     // Sets a good random speed as bugs approach background
     if (this.x < -100 && this.x > -150) {
-      this.speed = Math.floor((Math.random() * 30000) + 4000) * dt;
+      this.speed = Math.floor((Math.random() * 10)+2);
+      console.log(this.speed);
     }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
