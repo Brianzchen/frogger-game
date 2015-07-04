@@ -19,3 +19,8 @@ theshold of points the gems will change color and award more points.
 
 The gems do not always stay the same point and jump around periodically. The star will spawn less 
 frequently but will offer more points and does not move unless collected.
+
+How to run the game
+==============================
+
+Open index.html in the root folder with any web brower, preferably Chrome and use arrow keys or wasd to play.
