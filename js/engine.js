@@ -98,6 +98,9 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
+        allEnemiesReverse.forEach(function(enemy) {
+            enemy.update(dt);
+        });
         player.update();
     }
 
@@ -177,6 +180,9 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
+        allEnemiesReverse.forEach(function(enemy) {
+            enemy.render();
+        });
 
         player.render();
     }
@@ -198,6 +204,7 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
+        'images/enemy-bugr.png',
         'images/char-boy.png',
         'images/Gem Orange.png',
         'images/Gem Blue.png',

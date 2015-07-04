@@ -1,9 +1,8 @@
 // Enemies our player must avoid
-// Enemies initiated far away so when they emerge they don't clutter
 var Enemy = function() {
-    this.x = -100;
-    this.y = rowSelector();
-    this.speed = Math.floor((Math.random() * 10)+2);
+    this.x = -200;
+    this.y = rowSelectorBugsLeft();
+    this.speed = Math.floor((Math.random() * 6)+2);
     this.sprite = 'images/enemy-bug.png';
 };
 
@@ -16,6 +15,7 @@ Enemy.prototype.update = function(dt) {
       player.y = 300;
       for (var enemies in allEnemies) {
         allEnemies[enemies].x = -300;
+        allEnemies[enemies].y = rowSelectorBugsLeft();
       }
       // Reverting the player to 0 point or lose 10 points if they have
       // less than 0.
@@ -30,12 +30,7 @@ Enemy.prototype.update = function(dt) {
     // co-ordinates as if it were a new bug.
     if (this.x > 505) {
       this.x = -150;
-      this.y = rowSelector();
-    }
-    // Sets a good random speed as bugs approach background
-    if (this.x < -100 && this.x > -150) {
-      this.speed = Math.floor((Math.random() * 10)+2);
-      console.log(this.speed);
+      this.y = rowSelectorBugsLeft();
     }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -44,6 +39,51 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+//-----------------------------------------------------------------------------
+
+// Enemies our player must avoid except they go opposite direction
+var EnemyReverse = function() {
+    this.x = 800;
+    this.y = 140;
+    this.speed = Math.floor((Math.random() * 6)+2);
+    this.sprite = 'images/enemy-bugr.png';
+};
+
+// Update the enemy's position, required method for game
+// Parameter: dt, a time delta between ticks
+EnemyReverse.prototype.update = function(dt) {
+    // If the player comes in contact with a bug
+    if ((this.x <= player.x+50 && this.x >= player.x-50) && this.y === player.y) {
+      player.x = 200;
+      player.y = 300;
+      for (var enemies in allEnemiesReverse) {
+        allEnemiesReverse[enemies].x = 800;
+      }
+      // Reverting the player to 0 point or lose 10 points if they have
+      // less than 0.
+      if (score <= 0) {
+        score += -10;
+      } else {
+        score = 0;
+      }
+    }
+    this.x -= this.speed;
+    // If the bug reaches the end, reset it and give it new speeds and
+    // co-ordinates as if it were a new bug.
+    if (this.x < -300) {
+      this.x = 700;
+      this.y = 140;
+    }
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+};
+
+// Draw the enemy on the screen, required method for game
+EnemyReverse.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -231,11 +271,27 @@ var colSelector = function() {
     return x;
 };
 
+// This randomly generates the lane for bugs on the left side
+var rowSelectorBugsLeft = function() {
+    var row = Math.floor(Math.random()*2);
+    var y;
+    if (row === 1) {
+      y = 60;
+    } else if (row === 0) {
+      y = 220;
+    }
+    return y;
+};
+
 //initiates all the objects; enemies, player, gems, stars
 // and scoring system
 var allEnemies = [];
-for (i = 0; i < 5; i++) {
+for (i = 0; i < 4; i++) {
   allEnemies.push(new Enemy());
+}
+var allEnemiesReverse = [];
+for (i = 0; i < 3; i++) {
+  allEnemiesReverse.push(new EnemyReverse());
 }
 var player = new Player();
 var allGems = [];
