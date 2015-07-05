@@ -2,7 +2,7 @@
 var Enemy = function() {
     this.x = -200;
     this.y = rowSelectorBugsLeft();
-    this.speed = Math.floor((Math.random() * 6)+2);
+    this.speed = bugSpeed();
     this.sprite = 'images/enemy-bug.png';
 };
 
@@ -16,6 +16,7 @@ Enemy.prototype.update = function(dt) {
       for (var enemies in allEnemies) {
         allEnemies[enemies].x = -300;
         allEnemies[enemies].y = rowSelectorBugsLeft();
+        allEnemies[enemies].speed = bugSpeed();
       }
       // Reverting the player to 0 point or lose 10 points if they have
       // less than 0.
@@ -31,6 +32,7 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 505) {
       this.x = -150;
       this.y = rowSelectorBugsLeft();
+      this.speed = bugSpeed();
     }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -48,7 +50,7 @@ Enemy.prototype.render = function() {
 var EnemyReverse = function() {
     this.x = 800;
     this.y = rowSelectorBugsRight();
-    this.speed = Math.floor((Math.random() * 6)+2);
+    this.speed = bugSpeed();
     this.sprite = 'images/enemy-bugr.png';
 };
 
@@ -62,6 +64,7 @@ EnemyReverse.prototype.update = function(dt) {
       for (var enemies in allEnemiesReverse) {
         allEnemiesReverse[enemies].x = 800;
         allEnemiesReverse[enemies].y = rowSelectorBugsRight();
+        allEnemiesReverse[enemies].speed = bugSpeed();
       }
       // Reverting the player to 0 point or lose 10 points if they have
       // less than 0.
@@ -77,6 +80,7 @@ EnemyReverse.prototype.update = function(dt) {
     if (this.x < -300) {
       this.x = 700;
       this.y = rowSelectorBugsRight();
+      this.speed = bugSpeed();
     }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -109,7 +113,7 @@ Player.prototype.update = function() {
       this.y += -80;
     }
     if (this.y < 60) {
-      this.y = 300;
+      this.y = 380;
       this.x = 200;
       score += 50;
     }
@@ -298,6 +302,11 @@ var rowSelectorBugsRight = function() {
     }
     return y;
 };
+
+// Sets bugs speed
+var bugSpeed = function() {
+  Math.floor((Math.random() * 5)+2);
+}
 
 //initiates all the objects; enemies, player, gems, stars
 // and scoring system
