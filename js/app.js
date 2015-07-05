@@ -12,7 +12,7 @@ Enemy.prototype.update = function(dt) {
     // If the player comes in contact with a bug
     if ((this.x <= player.x+50 && this.x >= player.x-50) && this.y === player.y) {
       player.x = 200;
-      player.y = 300;
+      player.y = 380;
       for (var enemies in allEnemies) {
         allEnemies[enemies].x = -300;
         allEnemies[enemies].y = rowSelectorBugsLeft();
@@ -47,7 +47,7 @@ Enemy.prototype.render = function() {
 // Enemies our player must avoid except they go opposite direction
 var EnemyReverse = function() {
     this.x = 800;
-    this.y = 140;
+    this.y = rowSelectorBugsRight();
     this.speed = Math.floor((Math.random() * 6)+2);
     this.sprite = 'images/enemy-bugr.png';
 };
@@ -58,9 +58,10 @@ EnemyReverse.prototype.update = function(dt) {
     // If the player comes in contact with a bug
     if ((this.x <= player.x+50 && this.x >= player.x-50) && this.y === player.y) {
       player.x = 200;
-      player.y = 300;
+      player.y = 380;
       for (var enemies in allEnemiesReverse) {
         allEnemiesReverse[enemies].x = 800;
+        allEnemiesReverse[enemies].y = rowSelectorBugsRight();
       }
       // Reverting the player to 0 point or lose 10 points if they have
       // less than 0.
@@ -75,7 +76,7 @@ EnemyReverse.prototype.update = function(dt) {
     // co-ordinates as if it were a new bug.
     if (this.x < -300) {
       this.x = 700;
-      this.y = 140;
+      this.y = rowSelectorBugsRight();
     }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
@@ -93,7 +94,7 @@ EnemyReverse.prototype.render = function() {
 var Player = function() {
     this.sprite = "images/char-boy.png";
     this.x = 200;
-    this.y = 300;
+    this.y = 380;
 };
 
 // Stops player from leaving the game border
@@ -241,14 +242,17 @@ setInterval(function () {
 
 // This randomly generates a y value between the 3 row tiles
 var rowSelector = function() {
-    var row = Math.floor(Math.random()*3);
+    var row = Math.floor(Math.random()*4);
     var y;
-    if (row === 2) {
+    if (row === 3) {
       y = 60;
-    } else if (row === 1) {
+    }
+    else if (row === 2) {
       y = 140;
-    } else if (row === 0) {
+    } else if (row === 1) {
       y = 220;
+    } else if (row === 0) {
+      y = 300;
     }
     return y;
 };
@@ -283,6 +287,18 @@ var rowSelectorBugsLeft = function() {
     return y;
 };
 
+// This randomly generates the lane for bugs on the right side
+var rowSelectorBugsRight = function() {
+    var row = Math.floor(Math.random()*2);
+    var y;
+    if (row === 1) {
+      y = 140;
+    } else if (row === 0) {
+      y = 300;
+    }
+    return y;
+};
+
 //initiates all the objects; enemies, player, gems, stars
 // and scoring system
 var allEnemies = [];
@@ -290,7 +306,7 @@ for (i = 0; i < 4; i++) {
   allEnemies.push(new Enemy());
 }
 var allEnemiesReverse = [];
-for (i = 0; i < 3; i++) {
+for (i = 0; i < 4; i++) {
   allEnemiesReverse.push(new EnemyReverse());
 }
 var player = new Player();
