@@ -243,6 +243,7 @@ setInterval(function () {
   8000);
 
 //-----------------------------------------------------------------------------
+// Allt he functions
 
 // This randomly generates a y value between the 3 row tiles
 var rowSelector = function() {
@@ -305,7 +306,7 @@ var rowSelectorBugsRight = function() {
 
 // Sets bugs speed
 var bugSpeed = function() {
-  Math.floor((Math.random() * 5)+2);
+  return Math.floor((Math.random() * 5)+2);
 }
 
 //initiates all the objects; enemies, player, gems, stars
