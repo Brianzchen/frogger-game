@@ -21,9 +21,11 @@ Enemy.prototype.update = function(dt) {
       // Reverting the player to 0 point or lose 10 points if they have
       // less than 0.
       if (score <= 0) {
-        score += -10;
+        score = Number(score)-10;
+        localStorage.froggerScore = score;
       } else {
         score = 0;
+        localStorage.froggerScore = 0;
       }
     }
     this.x += this.speed;
@@ -69,9 +71,11 @@ EnemyReverse.prototype.update = function(dt) {
       // Reverting the player to 0 point or lose 10 points if they have
       // less than 0.
       if (score <= 0) {
-        score += -10;
+        score = Number(score)-10;
+        localStorage.froggerScore = score;
       } else {
         score = 0;
+        localStorage.froggerScore = 0;
       }
     }
     this.x -= this.speed;
@@ -115,11 +119,13 @@ Player.prototype.update = function() {
     if (this.y < 60) {
       this.y = 380;
       this.x = 200;
-      score += 50;
+      score = Number(score)+50;
+      localStorage.froggerScore = score;
     }
     // updates the highScore
     if (score > highScore) {
       highScore = score;
+      localStorage.froggerHighScore = highScore;
     }
 };
 
@@ -157,7 +163,8 @@ var Gem = function() {
 
 Gem.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.3) {
-      score += 10;
+      score = Number(score)+10;
+      localStorage.froggerScore = score;
       this.y = rowSelector();
       this.x = colSelector();
       this.chance = Math.random();
@@ -171,13 +178,15 @@ Gem.prototype.update = function() {
       this.sprite = "images/Gem Green.png";
     }
     if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 200 && score < 500) {
-      score += 10;
+      score = Number(score)+10;
+      localStorage.froggerScore = score;
     }
     if (score >= 500) {
       this.sprite = "images/Gem Orange.png";
     }
     if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 500) {
-      score += 10;
+      score = Number(score)+10;
+      localStorage.froggerScore = score;
     }
 };
 
@@ -214,7 +223,8 @@ var Star = function() {
 // Updates the star if player steps on it.
 Star.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.1) {
-      score += 30;
+      score = Number(score)+30;
+      localStorage.froggerScore = score;
       this.x = colSelector();
       this.chance = Math.random();
     }
@@ -327,6 +337,17 @@ for (i = 0; i < 6; i++) {
 var star = new Star();
 var score = 0;
 var highScore = 0;
+
+// Sets the highscore from local storage if available
+if (localStorage.froggerHighScore) {
+  highScore = localStorage.froggerHighScore;
+}
+
+// Sets the score plaer left off with.
+// Prevents resets if the player sucks
+if (localStorage.froggerScore) {
+  score = localStorage.froggerScore;
+}
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
