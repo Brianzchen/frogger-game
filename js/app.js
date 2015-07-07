@@ -119,7 +119,7 @@ Player.prototype.update = function() {
     if (this.y < 60) {
       this.y = 380;
       this.x = 200;
-      score = Number(score)+50;
+      score = Number(score)+25;
       localStorage.froggerScore = score;
     }
     // updates the highScore
@@ -185,7 +185,7 @@ Gem.prototype.update = function() {
       this.sprite = "images/Gem Orange.png";
     }
     if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 500) {
-      score = Number(score)+10;
+      score = Number(score)+5;
       localStorage.froggerScore = score;
     }
 };
@@ -223,7 +223,7 @@ var Star = function() {
 // Updates the star if player steps on it.
 Star.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.1) {
-      score = Number(score)+30;
+      score = Number(score)+40;
       localStorage.froggerScore = score;
       this.x = colSelector();
       this.chance = Math.random();
