@@ -1,26 +1,28 @@
-frontend-nanodegree-arcade-game
+# About the game
 ===============================
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+The Hardcore Frogger Experience is my own personal take on the classic arcade game Frogger from the 1990's
 
-for self-checking their submission.
+The objective of the game is to collect as many points as possible, without being hit by a bug at which point will reduce the players point count to zero or minus 10 points per death if they are already at zero or below points.
 
-How to play the game
-===============================
+Gem will spawn and disappear on a timer so the gems always spawn randomly.
+The star will will only spawn on the top row but has a low chance of spawning, when spawned it will not disappear until collected by the player
 
-This player will collect points and try to cross the tiles, if they manage to cross the tiles they are awarded points
-if they die they will lose all their points, but the game continues. 
+Points and highscores are recorded on the users localStorage of their browser.
 
-If the player already has 0 or less points, instead of reverting the player to no points, the player will lose an aditional
-10 points per death
+## Point system
 
-Objects will spawn periodically in the game which the player can collect to earn more points, if the player reaches a 
-theshold of points the gems will change color and award more points.
+Crossing the river - 25 points
 
-The gems do not always stay the same point and jump around periodically. The star will spawn less 
-frequently but will offer more points and does not move unless collected.
+Blue gem - 10 points
+Green gem - 20 points
+Orange gem - 25 points
 
-How to run the game
+Star - 40 points
+
+Dying - player reduced to 0 points or -10 points if player has 0 or less points upon death
+
+# How to run the game
 ==============================
 
-Open index.html in the root folder with any web brower, preferably Chrome and use arrow keys or wasd to play.
+To run this application download the zip file and right click on index.html and open with your favourite browser. Alternatively you can checkout the live version on brianzchen.github.io/frogger-game
