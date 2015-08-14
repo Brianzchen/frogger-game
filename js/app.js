@@ -126,6 +126,20 @@ Player.prototype.update = function() {
     if (score > highScore) {
       highScore = score;
       localStorage.froggerHighScore = highScore;
+
+      query.exists("highScore");
+      query.first({
+        success: function(object) {
+          if (score > object.attributes.highScore) {
+            object.set("highScore", score);
+            object.save();
+            globalHighScore = highScore;
+          }
+        },
+        error: function(error) {
+          alert("Error: " + error.code + " " + error.message);
+        }
+      });
     }
 };
 
@@ -337,6 +351,28 @@ for (i = 0; i < 6; i++) {
 var star = new Star();
 var score = 0;
 var highScore = 0;
+var globalHighScore;
+
+// Loads the server stored global high score
+Parse.initialize("p45yej86tibQrsfKYCcj6UmNw4o7b6kxtsobZnmA", "fXSkEhDGakCYnVv5OOdAfWDmjAuQvlnFI5KOwIUO");
+var GameScore = Parse.Object.extend("GameScore");
+var gameScore = new GameScore();
+var query = new Parse.Query(GameScore);
+
+query.exists("highScore");
+query.first({
+  success: function(object) {
+    if (object === undefined) {
+      globalHighScore = 0;
+    } else {
+      globalHighScore = object.attributes.highScore;
+      console.log(object.attributes.highScore);
+    }
+  },
+  error: function(error) {
+    alert("Error: " + error.code + " " + error.message);
+  }
+});
 
 // Sets the highscore from local storage if available
 if (localStorage.froggerHighScore) {
