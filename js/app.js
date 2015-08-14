@@ -126,14 +126,15 @@ Player.prototype.update = function() {
     if (score > highScore) {
       highScore = score;
       localStorage.froggerHighScore = highScore;
+      tempScore = score;
 
       query.exists("highScore");
       query.first({
         success: function(object) {
-          if (score > object.attributes.highScore) {
+          if (tempScore > object.attributes.highScore) {
             object.set("highScore", score);
             object.save();
-            globalHighScore = highScore;
+            globalHighScore = tempScore;
           }
         },
         error: function(error) {
@@ -352,6 +353,7 @@ var star = new Star();
 var score = 0;
 var highScore = 0;
 var globalHighScore;
+var tempScore;
 
 // Loads the server stored global high score
 Parse.initialize("p45yej86tibQrsfKYCcj6UmNw4o7b6kxtsobZnmA", "fXSkEhDGakCYnVv5OOdAfWDmjAuQvlnFI5KOwIUO");
