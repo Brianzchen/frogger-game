@@ -137,11 +137,14 @@ var Engine = (function(global) {
         ctx.font = "28pt impact";
         ctx.fillText("The Hardcore Frogger Experience", canvas.width/2, 40);
         ctx.fillStyle = "white";
-        ctx.fillRect(70, 600, 400, 200);
+        ctx.fillRect(70, 580, 400, 200);
         ctx.fillStyle = "black";
-        ctx.font = "36pt impact";
-        ctx.fillText("Your score: " + score, canvas.width/2, 640);
-        ctx.fillText("High score: " + highScore, canvas.width/2, 690);
+        ctx.font = "20pt impact";
+        ctx.fillText("Your score: " + score, canvas.width/2, 610);
+        ctx.fillText("High score: " + highScore, canvas.width/2, 640);
+        if (globalHighScore !== undefined) {
+          ctx.fillText("Global high score: " + globalHighScore, canvas.width/2, 670);
+        }
         ctx.restore();
 
         /* Loop through the number of rows and columns we've defined above
