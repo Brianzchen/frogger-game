@@ -335,6 +335,8 @@ var updateGlobalScore = function() {
         object.set("highScore", score);
         object.save();
         globalHighScore = tempScore;
+      } else {
+        globalHighScore = object.attributes.highScore;
       }
     },
     error: function(error) {
