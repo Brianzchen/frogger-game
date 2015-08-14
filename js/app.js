@@ -121,26 +121,14 @@ Player.prototype.update = function() {
       this.x = 200;
       score = Number(score)+25;
       localStorage.froggerScore = score;
+      updateGlobalScore();
     }
     // updates the highScore
     if (score > highScore) {
       highScore = score;
       localStorage.froggerHighScore = highScore;
-      tempScore = score;
 
-      query.exists("highScore");
-      query.first({
-        success: function(object) {
-          if (tempScore > object.attributes.highScore) {
-            object.set("highScore", score);
-            object.save();
-            globalHighScore = tempScore;
-          }
-        },
-        error: function(error) {
-          alert("Error: " + error.code + " " + error.message);
-        }
-      });
+      updateGlobalScore();
     }
 };
 
@@ -153,6 +141,7 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(key) {
     if (key === "up") {
       this.y += -80;
+      updateGlobalScore();
     }
     if (key === "down") {
       this.y += 80;
@@ -180,6 +169,7 @@ Gem.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.3) {
       score = Number(score)+10;
       localStorage.froggerScore = score;
+      updateGlobalScore();
       this.y = rowSelector();
       this.x = colSelector();
       this.chance = Math.random();
@@ -240,6 +230,7 @@ Star.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.1) {
       score = Number(score)+40;
       localStorage.froggerScore = score;
+      updateGlobalScore();
       this.x = colSelector();
       this.chance = Math.random();
     }
@@ -332,6 +323,24 @@ var rowSelectorBugsRight = function() {
 // Sets bugs speed
 var bugSpeed = function() {
   return Math.floor((Math.random() * 5)+2);
+}
+
+// Checks to see if global high score can be updated
+var updateGlobalScore = function() {
+  tempScore = score;
+  query.exists("highScore");
+  query.first({
+    success: function(object) {
+      if (tempScore > object.attributes.highScore) {
+        object.set("highScore", score);
+        object.save();
+        globalHighScore = tempScore;
+      }
+    },
+    error: function(error) {
+      alert("Error: " + error.code + " " + error.message);
+    }
+  });
 }
 
 //initiates all the objects; enemies, player, gems, stars
