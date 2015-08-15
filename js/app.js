@@ -323,16 +323,16 @@ var rowSelectorBugsRight = function() {
 // Sets bugs speed
 var bugSpeed = function() {
   return Math.floor((Math.random() * 5)+2);
-}
+};
 
 // Checks to see if global high score can be updated
 var updateGlobalScore = function() {
-  tempScore = score;
+  var tempScore = score;
   query.exists("highScore");
   query.first({
     success: function(object) {
       if (tempScore > object.attributes.highScore) {
-        object.set("highScore", score);
+        object.set("highScore", tempScore);
         object.save();
         globalHighScore = tempScore;
       } else {
@@ -343,7 +343,7 @@ var updateGlobalScore = function() {
       alert("Error: " + error.code + " " + error.message);
     }
   });
-}
+};
 
 //initiates all the objects; enemies, player, gems, stars
 // and scoring system
@@ -364,7 +364,6 @@ var star = new Star();
 var score = 0;
 var highScore = 0;
 var globalHighScore;
-var tempScore;
 
 // Loads the server stored global high score
 Parse.initialize("p45yej86tibQrsfKYCcj6UmNw4o7b6kxtsobZnmA", "fXSkEhDGakCYnVv5OOdAfWDmjAuQvlnFI5KOwIUO");
