@@ -366,7 +366,7 @@ var highScore = 0;
 var globalHighScore;
 
 // Loads the server stored global high score
-Parse.initialize("p45yej86tibQrsfKYCcj6UmNw4o7b6kxtsobZnmA", "fXSkEhDGakCYnVv5OOdAfWDmjAuQvlnFI5KOwIUO");
+Parse.initialize("qnXj6mS8l2Ct2YJBukbZI8ZFILgPsiJIeNrPE9QG", "2EVafGEh1g6AkAqkzDGAH2V6eAr7GXzRgg9mvb3H");
 var GameScore = Parse.Object.extend("GameScore");
 var gameScore = new GameScore();
 var query = new Parse.Query(GameScore);
