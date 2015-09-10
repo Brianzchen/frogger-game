@@ -11,22 +11,7 @@ var Enemy = function() {
 Enemy.prototype.update = function(dt) {
     // If the player comes in contact with a bug
     if ((this.x <= player.x+50 && this.x >= player.x-50) && this.y === player.y) {
-      player.x = 200;
-      player.y = 380;
-      for (var enemies in allEnemies) {
-        allEnemies[enemies].x = -300;
-        allEnemies[enemies].y = rowSelectorBugsLeft();
-        allEnemies[enemies].speed = bugSpeed();
-      }
-      // Reverting the player to 0 point or lose 10 points if they have
-      // less than 0.
-      if (score <= 0) {
-        score = Number(score)-10;
-        localStorage.froggerScore = score;
-      } else {
-        score = 0;
-        localStorage.froggerScore = 0;
-      }
+      resetGame();
     }
     this.x += this.speed;
     // If the bug reaches the end, reset it and give it new speeds and
@@ -61,22 +46,7 @@ var EnemyReverse = function() {
 EnemyReverse.prototype.update = function(dt) {
     // If the player comes in contact with a bug
     if ((this.x <= player.x+50 && this.x >= player.x-50) && this.y === player.y) {
-      player.x = 200;
-      player.y = 380;
-      for (var enemies in allEnemiesReverse) {
-        allEnemiesReverse[enemies].x = 800;
-        allEnemiesReverse[enemies].y = rowSelectorBugsRight();
-        allEnemiesReverse[enemies].speed = bugSpeed();
-      }
-      // Reverting the player to 0 point or lose 10 points if they have
-      // less than 0.
-      if (score <= 0) {
-        score = Number(score)-10;
-        localStorage.froggerScore = score;
-      } else {
-        score = 0;
-        localStorage.froggerScore = 0;
-      }
+      resetGame();
     }
     this.x -= this.speed;
     // If the bug reaches the end, reset it and give it new speeds and
@@ -259,7 +229,32 @@ setInterval(function () {
   8000);
 
 //-----------------------------------------------------------------------------
-// Allt he functions
+// All the functions
+
+// Resets the bugs and the player if the player dies
+var resetGame = function() {
+  player.x = 200;
+  player.y = 380;
+  for (var enemies in allEnemies) {
+    allEnemies[enemies].x = -300;
+    allEnemies[enemies].y = rowSelectorBugsLeft();
+    allEnemies[enemies].speed = bugSpeed();
+  }
+  for (var enemies in allEnemiesReverse) {
+    allEnemiesReverse[enemies].x = 800;
+    allEnemiesReverse[enemies].y = rowSelectorBugsRight();
+    allEnemiesReverse[enemies].speed = bugSpeed();
+  }
+  // Reverting the player to 0 point or lose 10 points if they have
+  // less than 0.
+  if (score <= 0) {
+    score = Number(score)-10;
+    localStorage.froggerScore = score;
+  } else {
+    score = 0;
+    localStorage.froggerScore = 0;
+  }
+}
 
 // This randomly generates a y value between the 3 row tiles
 var rowSelector = function() {
