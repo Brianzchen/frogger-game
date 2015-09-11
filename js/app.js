@@ -90,28 +90,24 @@ Player.prototype.update = function() {
       this.y = 380;
       this.x = 200;
       score = Number(score)+25;
-      localStorage.froggerScore = score;
       updateGlobalScore();
     }
     // updates the highScore
     if (score > highScore) {
       highScore = score;
       localStorage.froggerHighScore = highScore;
-
-      updateGlobalScore();
     }
 };
 
 // Draws the player character
 Player.prototype.render = function() {
-      ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Handle player inputs
 Player.prototype.handleInput = function(key) {
     if (key === "up") {
       this.y += -80;
-      updateGlobalScore();
     }
     if (key === "down") {
       this.y += 80;
@@ -138,7 +134,6 @@ var Gem = function() {
 Gem.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.3) {
       score = Number(score)+10;
-      localStorage.froggerScore = score;
       updateGlobalScore();
       this.y = rowSelector();
       this.x = colSelector();
@@ -154,14 +149,14 @@ Gem.prototype.update = function() {
     }
     if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 200 && score < 500) {
       score = Number(score)+10;
-      localStorage.froggerScore = score;
+      updateGlobalScore();
     }
     if (score >= 500) {
       this.sprite = "images/Gem Orange.png";
     }
     if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 500) {
       score = Number(score)+5;
-      localStorage.froggerScore = score;
+      updateGlobalScore();
     }
 };
 
@@ -199,7 +194,6 @@ var Star = function() {
 Star.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.1) {
       score = Number(score)+40;
-      localStorage.froggerScore = score;
       updateGlobalScore();
       this.x = colSelector();
       this.chance = Math.random();
@@ -322,6 +316,7 @@ var bugSpeed = function() {
 
 // Checks to see if global high score can be updated
 var updateGlobalScore = function() {
+  localStorage.froggerScore = score;
   var tempScore = score;
   query.exists("highScore");
   query.first({
@@ -371,9 +366,19 @@ query.first({
   success: function(object) {
     if (object === undefined) {
       globalHighScore = 0;
+      gameScore.set("highScore", 0);
+      gameScore.save(null,{
+        success: function(gameScore) {
+          console.log('New object created with objectId: ' + gameScore.id);
+        },
+        error: function(shopData, error) {
+          // Execute any logic that should take place if the save fails.
+          // error is a Parse.Error with an error code and message.
+          alert('Failed to create new object, with error code: ' + error.message);
+        }
+      });
     } else {
       globalHighScore = object.attributes.highScore;
-      console.log(object.attributes.highScore);
     }
   },
   error: function(error) {
