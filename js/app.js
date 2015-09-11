@@ -248,7 +248,7 @@ var resetGame = function() {
     score = 0;
     localStorage.froggerScore = 0;
   }
-}
+};
 
 // This randomly generates a y value between the 3 row tiles
 var rowSelector = function() {
