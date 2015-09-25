@@ -7,15 +7,16 @@ The objective of the game is to collect as many points as possible, without bein
 Gems will spawn and disappear on a timer so the gems always spawn randomly.
 The star will will only spawn on the top row but has a low chance of spawning, when spawned it will not disappear until collected by the player
 
-Points and highscores are recorded on the users localStorage of their browser.
+Points and high scores are recorded on the users localStorage of their browser.
+A global high score is also recorded on a server provided by Facebook's Parse.com
 
 ## Point system
 
 Crossing the river - 25 points
 
-* Blue gem - 10 points
-* Green gem - 20 points
-* Orange gem - 25 points
+* Blue gem - 15 points
+* Green gem - 10 points
+* Orange gem - 5 points
 
 Star - 40 points
 
