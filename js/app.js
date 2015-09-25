@@ -133,7 +133,15 @@ var Gem = function() {
 
 Gem.prototype.update = function() {
     if (this.x === player.x && this.y === player.y && this.chance < 0.3) {
-      score = Number(score)+10;
+      // Decides how many points player should get if they land on gems
+      // at different point breaks
+      if (score < 200) {
+        score = Number(score)+15;
+      } else if (score >= 200 && score <500) {
+        score = Number(score)+10;
+      } else {
+        score = Number(score)+5;
+      }
       updateGlobalScore();
       this.y = rowSelector();
       this.x = colSelector();
@@ -147,16 +155,8 @@ Gem.prototype.update = function() {
     if (score >= 200 && score < 500) {
       this.sprite = "images/Gem Green.png";
     }
-    if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 200 && score < 500) {
-      score = Number(score)+10;
-      updateGlobalScore();
-    }
     if (score >= 500) {
       this.sprite = "images/Gem Orange.png";
-    }
-    if (this.x === player.x && this.y === player.y && this.chance < 0.3 && score >= 500) {
-      score = Number(score)+5;
-      updateGlobalScore();
     }
 };
 
