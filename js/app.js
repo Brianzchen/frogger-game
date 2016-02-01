@@ -318,21 +318,9 @@ var bugSpeed = function() {
 var updateGlobalScore = function() {
   localStorage.froggerScore = score;
   var tempScore = score;
-  query.exists("highScore");
-  query.first({
-    success: function(object) {
-      if (tempScore > object.attributes.highScore) {
-        object.set("highScore", tempScore);
-        object.save();
-        globalHighScore = tempScore;
-      } else {
-        globalHighScore = object.attributes.highScore;
-      }
-    },
-    error: function(error) {
-      alert("Error: " + error.code + " " + error.message);
-    }
-  });
+  if (globalHighScore < tempScore) {
+    scoreRef.set(tempScore);
+  }
 };
 
 //initiates all the objects; enemies, player, gems, stars
@@ -356,34 +344,19 @@ var highScore = 0;
 var globalHighScore;
 
 // Loads the server stored global high score
-Parse.initialize("qnXj6mS8l2Ct2YJBukbZI8ZFILgPsiJIeNrPE9QG", "2EVafGEh1g6AkAqkzDGAH2V6eAr7GXzRgg9mvb3H");
-var GameScore = Parse.Object.extend("GameScore");
-var gameScore = new GameScore();
-var query = new Parse.Query(GameScore);
+var scoreRef = new Firebase("https://frogger-game-0.firebaseio.com/");
 
-query.exists("highScore");
-query.first({
-  success: function(object) {
-    if (object === undefined) {
-      globalHighScore = 0;
-      gameScore.set("highScore", 0);
-      gameScore.save(null,{
-        success: function(gameScore) {
-          console.log('New object created with objectId: ' + gameScore.id);
-        },
-        error: function(shopData, error) {
-          // Execute any logic that should take place if the save fails.
-          // error is a Parse.Error with an error code and message.
-          alert('Failed to create new object, with error code: ' + error.message);
-        }
-      });
-    } else {
-      globalHighScore = object.attributes.highScore;
-    }
-  },
-  error: function(error) {
-    alert("Error: " + error.code + " " + error.message);
+scoreRef.on("value", function(snapshot) {
+  var object = snapshot.val();
+  if (object === null) {
+    globalHighScore = 0;
+    scoreRef.set(globalHighScore);
+  } else {
+    globalHighScore = object;
   }
+  console.log(object);
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
 });
 
 // Sets the highscore from local storage if available
