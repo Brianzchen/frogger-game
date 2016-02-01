@@ -8,7 +8,7 @@ Gems will spawn and disappear on a timer so the gems always spawn randomly.
 The star will will only spawn on the top row but has a low chance of spawning, when spawned it will not disappear until collected by the player
 
 Points and high scores are recorded on the users localStorage of their browser.
-A global high score is also recorded on a server provided by Facebook's Parse.com
+A global high score is also recorded on a server provided by Google's Firebase
 
 ## Point system
 
